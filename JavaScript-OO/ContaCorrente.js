@@ -1,6 +1,7 @@
 import { Client } from "./Client.js";
 
 export class ContaCorrente {
+    static numeroContas = 0;
     agencia;
     _cliente;
     //#saldo private field nova convenção ainda não aprovada
@@ -24,6 +25,7 @@ export class ContaCorrente {
     constructor(agencia,cliente){
         this.agencia = agencia;
         this.cliente = cliente;
+        ContaCorrente.numeroContas += 1;
     }
 
     sacar(valor) {

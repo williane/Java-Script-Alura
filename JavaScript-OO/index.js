@@ -12,4 +12,5 @@ conta2.depositar(200);
 
 conta2.transferir(100, conta1);
 
-console.log(conta1, conta2);
+console.log(conta2);
+console.log(ContaCorrente.numeroContas);
