@@ -1,38 +1,28 @@
-class ContaCorrente {
-    agencia;
-    _saldo = 0;
-
-    sacar(valor) {
-        const temSaldo = this._saldo >= valor;
-        // temSaldo ? this._saldo -= valor : console.log('saldo insuficiente');
-        if (temSaldo) {
-            this._saldo -= valor;
-            return `Valor sacado: ${valor} saldo total de ${this._saldo}`;
-        } else {
-            return 'Saldo insuficiente'
-        }
-    }
-
-    depositar(valor) {
-        const ehPositivo = valor > 0;
-        ehPositivo ? this._saldo += valor : console.log('valor não pode ser negativo');
-    }
-}
-
-class Client {
-    nome;
-    cpf;
-    contaCorrente = new ContaCorrente();
-}
-
+import { Client } from './Client.js';
+import { ContaCorrente } from './ContaCorrente.js';
 
 const client1 = new Client();
+const conta1 = new ContaCorrente();
+
+const client2 = new Client();
+const conta2 = new ContaCorrente();
 
 client1.nome = 'Ricardo';
 client1.cpf = 11122233300;
-client1.contaCorrente.agencia = 1001;
 
-client1.contaCorrente.depositar(200);
-const valorSacado = client1.contaCorrente.sacar(300);
+conta1.agencia = 1001;
+conta1.cliente = client1;
 
-console.log(valorSacado);
+client2.nome = 'alice';
+client2.cpf = 88899977700;
+
+conta2.agencia = 1002;
+conta2.cliente = client2;
+
+
+conta1.depositar(200);
+conta2.depositar(200);
+
+conta2.transferir(100, conta1);
+
+console.log(conta1, conta2);
