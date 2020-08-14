@@ -1,9 +1,27 @@
+import { Client } from "./Client.js";
+
 export class ContaCorrente {
     agencia;
-    cliente;
+    _cliente;
+
+    set cliente(client){
+       if(client instanceof Client){
+
+           this._cliente = client;
+       } 
+    }
+
+    get cliente(){
+        return this._cliente;
+    }
+
 
     //#saldo private field nova convenção ainda não aprovada
     _saldo = 0;
+
+    get saldo(){
+        return this._saldo;
+    }
 
     sacar(valor) {
         const temSaldo = this._saldo >= valor;
