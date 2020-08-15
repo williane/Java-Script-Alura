@@ -7,4 +7,17 @@ export class ContaCorrente extends Conta {
         super(0, cliente, agencia);
         ContaCorrente.numeroContas += 1;
     }
+
+    sacar(valor) {
+        let taxa = 1.1;
+        const valorSacado = taxa * valor;
+        const temSaldo = this._saldo >= valorSacado;
+        // temSaldo ? this._saldo -= valor : console.log('saldo insuficiente');
+        if (temSaldo) {
+            this._saldo -= valorSacado;
+            return valor;
+        } else {
+            return 0;
+        }
+    }
 }
