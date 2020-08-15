@@ -1,10 +1,10 @@
 import { Client } from './Client.js';
-import { ContaCorrente } from './conta/ContaCorrente.js';
+import { Diretor } from './funcionarios/Diretor.js';
+import { SistemaAutenticacao } from './SistemaAutenticacao.js';
 
-const client1 = new Client('Ricardo', 11122233300);
-const conta1 = new ContaCorrente(1001, client1);
+const diretor = new Diretor('Ricardo', 10000, 12312312300);
+diretor.cadastrarSenha('123123');
 
-conta1.depositar(200);
-conta1.sacar(100);
+const logado = SistemaAutenticacao.login(diretor, '123123');
 
-console.log(conta1);
+console.log(logado);
