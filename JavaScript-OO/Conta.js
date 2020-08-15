@@ -21,11 +21,16 @@ export class Conta {
     }
 
     sacar(valor) {
-        const temSaldo = this._saldo >= valor;
-        // temSaldo ? this._saldo -= valor : console.log('saldo insuficiente');
+        let taxa = 1;
+        return this._sacar(valor, taxa);
+    }
+
+    _sacar(valor, taxa){
+        const valorSacado = taxa * valor;
+        const temSaldo = this._saldo >= valorSacado;
         if (temSaldo) {
-            this._saldo -= valor;
-            return valor;
+            this._saldo -= valorSacado;
+            return valorSacado;
         } else {
             return 0;
         }
