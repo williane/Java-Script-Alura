@@ -4,7 +4,7 @@ class DateHelper {
   }
 
   static textoParadata(texto) {
-    if (!/\d{4}[-/.]\d{1,2}[-/.]\d{1,2}/.test(texto)) {
+    if (!/^\d{4}[-/.]\d{1,2}[-/.]\d{1,2}$/.test(texto)) {
       throw new Error("o formato de data está inválido!");
     }
 
