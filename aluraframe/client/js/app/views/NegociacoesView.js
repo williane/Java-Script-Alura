@@ -1,6 +1,6 @@
 class NegociacoesView {
   constructor(elemento) {
-      this._elemento = elemento;
+    this._elemento = elemento;
   }
 
   _template(model) {
@@ -15,9 +15,9 @@ class NegociacoesView {
             </thead>
 
             <tbody>
-                ${
-                    model.negociacoes.map((n)=>{
-                        return `
+                ${model.negociacoes
+                  .map((n) => {
+                    return `
                             <tr>
                                 <td>${DateHelper.dataParaTexto(n.data)}</td>
                                 <td>${n.quantidade}</td>
@@ -25,17 +25,27 @@ class NegociacoesView {
                                 <td>${n.volume}</td>
                             </tr>
                         `;
-                    }).join('')
-                }
+                  })
+                  .join("")}
             </tbody>
 
             <tfoot>
+                  <td colspan="3"></td>
+                  <td>                  
+                  ${
+                    /*IIFE - uma function que se auto invoca*/
+                    (function () {
+                      let total = 0;
+                      model.negociacoes.forEach((n) => (total += n.volume));
+                      return total;
+                    })()
+                  }</td> 
             </tfoot>
         </table>
     `;
   }
 
-  update(model){
-      this._elemento.innerHTML = this._template(model);
+  update(model) {
+    this._elemento.innerHTML = this._template(model);
   }
 }
