@@ -61,6 +61,7 @@
             get: function(target, prop, receiver) {
     
                   console.log(`a propriedade "${prop}" foi interceptada`);
+                  return Reflect.get(target, prop, receiver);
             }
         });
     
