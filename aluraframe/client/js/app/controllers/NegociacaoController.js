@@ -15,6 +15,22 @@ class NegociacaoController {
     this._limpaFormulario();
   }
 
+  importaNogociacoes(){
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'negociacoes/semana');
+
+    xhr.onreadystatechange = () => {
+      if(xhr.readyState == 4){
+        if(xhr.status == 200){
+          
+        }
+      }
+    };
+
+    xhr.send();
+  }
+
   apaga(){
     this._listaNegociacoes.esvazia();
     this._mensagem.texto = 'Negociações apagadas com sucesso!';
