@@ -15,20 +15,18 @@ class NegociacaoController {
     this._limpaFormulario();
   }
 
-  importaNogociacoes(){
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'negociacoes/semana');
-
-    xhr.onreadystatechange = () => {
-      if(xhr.readyState == 4){
-        if(xhr.status == 200){
-          
-        }
+  importaNegociacoes(){
+    let service = new NegociacaoService();
+    service.obterNegociacoesDaSemana((err, negociacoes) => {
+      if(err){
+        this._mensagem.texto = err;
+        return;        
       }
-    };
 
-    xhr.send();
+      negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+      this._mensagem.texto = 'Negociações importadas com sucesso!';
+
+    });
   }
 
   apaga(){
