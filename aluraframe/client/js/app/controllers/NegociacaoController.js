@@ -9,27 +9,45 @@ class NegociacaoController {
   }
 
   adiciona(event) {
-    event.preventDefault();    
+    event.preventDefault();
     this._listaNegociacoes.adiciona(this._criaNegociacao());
     this._mensagem.texto = 'Negociacao adicionada com sucesso!'
     this._limpaFormulario();
   }
 
-  importaNegociacoes(){
+  importaNegociacoes() {
     let service = new NegociacaoService();
     service.obterNegociacoesDaSemana((err, negociacoes) => {
-      if(err){
+      if (err) {
         this._mensagem.texto = err;
-        return;        
+        return;
       }
 
       negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-      this._mensagem.texto = 'Negociações importadas com sucesso!';
+      service.obterNegociacoesDaSemanaAnterior((err, negociacoes) => {
+        if (err) {
+          this._mensagem.texto = err;
+          return;
+        }
+
+        negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+        service.obterNegociacoesDaSemanaRetrasada((err, negociacoes) => {
+          if (err) {
+            this._mensagem.texto = err;
+            return;
+          }
+
+          negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+          this._mensagem.texto = 'Negociações importadas com sucesso!';
+
+        });
+
+      });
 
     });
   }
 
-  apaga(){
+  apaga() {
     this._listaNegociacoes.esvazia();
     this._mensagem.texto = 'Negociações apagadas com sucesso!';
   }
