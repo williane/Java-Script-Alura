@@ -12,8 +12,10 @@ class NegociacaoController {
   adiciona(event) {
     event.preventDefault();
     this._listaNegociacoes.adiciona(this._criaNegociacao());
-    this._mensagem.texto = 'Negociacao adicionada com sucesso!'
-    this._limpaFormulario();
+    new HttpService().post('/negociacoes', this._criaNegociacao('objeto')).then(() => {
+      this._mensagem.texto = 'Negociacao adicionada com sucesso!'
+      this._limpaFormulario();
+    }).catch(error => this._mensagem.texto = error);
   }
 
   importaNegociacoes() {
@@ -31,7 +33,14 @@ class NegociacaoController {
     this._mensagem.texto = 'Negociações apagadas com sucesso!';
   }
 
-  _criaNegociacao() {
+  _criaNegociacao(tipo) {
+    if(tipo){
+      return {
+        data:this._inputData.value,
+        quantidade: this._inputQuantidade.value,
+        valor: this._inputValor.value
+      }
+    }
     return new Negociacao(
       DateHelper.textoParadata(this._inputData.value),
       this._inputQuantidade.value,
