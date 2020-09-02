@@ -4,6 +4,14 @@ class mensagemView extends View{
     }
 
     _template(model){
-        return model.texto ? `<p class="alert alert-info">${model.texto}</p>` : '<p></p>';
+        if(model.texto){
+            $('#mensagemView').show();
+            return  `${model.texto}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>`; 
+        } 
+
+        return '<p></p>';
     }
 }

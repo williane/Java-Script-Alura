@@ -12,7 +12,7 @@
 <body class="container">
 
     <h1 class="text-center">Negociações</h1>
-    <div id="mensagemView"></div>
+    <div class="alert alert-info" id="mensagemView" onclick="closeMessage()"></div>
     <form class="form" onsubmit="negociacaoController.adiciona(event)">
 
         <div class="form-group">
@@ -44,6 +44,7 @@
     <br>
     <br>
     <div id="negociacoesView"></div>
+    <script src="js/jquery.js"></script>
     <script src="js/app/models/Negociacao.js"></script>
     <script src="js/app/models/Mensagem.js"></script>
     <script src="js/app/models/ListaNegociacoes.js"></script>
@@ -58,7 +59,14 @@
     <script src="js/app/services/NegociacaoService.js"></script>
     <script src="js/app/controllers/NegociacaoController.js"></script>
     <script>
+        $(document).ready(()=>{
+            $('#mensagemView').hide(); 
+        });
         let negociacaoController = new NegociacaoController();
+
+        function closeMessage(){
+            $('#mensagemView').hide();
+        }
     </script>
 </body>
 
