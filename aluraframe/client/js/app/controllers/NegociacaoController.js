@@ -11,11 +11,18 @@ class NegociacaoController {
 
   adiciona(event) {
     event.preventDefault();
-    this._listaNegociacoes.adiciona(this._criaNegociacao());
-    new HttpService().post('/negociacoes', this._criaNegociacao('objeto')).then(() => {
-      this._mensagem.texto = 'Negociacao adicionada com sucesso!'
-      this._limpaFormulario();
-    }).catch(error => this._mensagem.texto = error);
+
+    ConnectionFactory.getConnection().then(connection => {
+      let negociacao = this._criaNegociacao();
+      new NegociacaoDao(connection).adiciona(negociacao).then(() => {        
+        new HttpService().post('/negociacoes', this._criaNegociacao('objeto')).then(() => {
+          this._listaNegociacoes.adiciona(this._criaNegociacao());
+          this._mensagem.texto = 'Negociacao adicionada com sucesso!'
+          this._limpaFormulario();
+        }).catch(error => this._mensagem.texto = error);
+
+      }).catch(error => this._mensagem.texto = error);
+    });
   }
 
   importaNegociacoes() {
@@ -34,17 +41,17 @@ class NegociacaoController {
   }
 
   _criaNegociacao(tipo) {
-    if(tipo){
+    if (tipo) {
       return {
-        data:this._inputData.value,
+        data: this._inputData.value,
         quantidade: this._inputQuantidade.value,
         valor: this._inputValor.value
       }
     }
     return new Negociacao(
       DateHelper.textoParadata(this._inputData.value),
-      this._inputQuantidade.value,
-      this._inputValor.value
+      parseInt(this._inputQuantidade.value),
+      parseFloat(this._inputValor.value)
     );
   }
 
@@ -56,11 +63,11 @@ class NegociacaoController {
     this._inputData.focus();
   }
 
-  ordena(coluna){
-    if(this._ordemAtual == coluna){
+  ordena(coluna) {
+    if (this._ordemAtual == coluna) {
       this._listaNegociacoes.invertOrdem();
-    }else{
-      this._listaNegociacoes.ordena((a, b)=> a[coluna] - b[coluna]);
+    } else {
+      this._listaNegociacoes.ordena((a, b) => a[coluna] - b[coluna]);
     }
     this._ordemAtual = coluna;
   }
