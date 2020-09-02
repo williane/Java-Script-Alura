@@ -7,6 +7,9 @@ class NegociacaoController {
     this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($('#negociacoesView')), 'adiciona', 'esvazia', 'ordena', 'invertOrdem');
     this._mensagem = new Bind(new Mensagem(), new mensagemView($('#mensagemView')), 'texto');
     this._ordemAtual = '';
+    ConnectionFactory.getConnection().then(connection => {
+      new NegociacaoDao(connection).listaTodos().then(negociacoes => negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao)));
+    });
   }
 
   adiciona(event) {
