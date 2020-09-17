@@ -28,12 +28,9 @@ class NegociacaoController {
     ConnectionFactory.getConnection().then(connection => {
       let negociacao = this._criaNegociacao();
       new NegociacaoDao(connection).adiciona(negociacao).then(() => {
-        new HttpService().post('/negociacoes', this._criaNegociacao('objeto')).then(() => {
-          this._listaNegociacoes.adiciona(this._criaNegociacao());
-          this._mensagem.texto = 'Negociacao adicionada com sucesso!'
-          this._limpaFormulario();
-        }).catch(error => this._mensagem.texto = error);
-
+        this._listaNegociacoes.adiciona(this._criaNegociacao());
+        this._mensagem.texto = 'Negociacao adicionada com sucesso!'
+        this._limpaFormulario();
       }).catch(error => this._mensagem.texto = error);
     });
   }
@@ -46,7 +43,7 @@ class NegociacaoController {
         !this._listaNegociacoes.negociacoes.some(negociacaoExistente => JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente))))
       .then(negociacoes => {
         negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-        this._mensagem.texto = 'Negociações obtidas com sucesso!';
+        // this._mensagem.texto = 'Negociações obtidas com sucesso!';
       }).catch(erro => this._mensagem.texto = erro);
   }
 
