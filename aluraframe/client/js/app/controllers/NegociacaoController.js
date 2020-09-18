@@ -7,14 +7,19 @@ class NegociacaoController {
     this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($('#negociacoesView')), 'adiciona', 'esvazia', 'ordena', 'invertOrdem');
     this._mensagem = new Bind(new Mensagem(), new mensagemView($('#mensagemView')), 'texto');
     this._ordemAtual = '';
-
+    this._service = new NegociacaoService();
     this._init();
   }
 
   _init() {
-    ConnectionFactory.getConnection().then(connection => {
-      new NegociacaoDao(connection).listaTodos().then(negociacoes => negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))).catch(error => this._mensagem.texto = error);
-    }).catch(error => this._mensagem.texto = error);
+    this._service
+        .lista()
+        .then(negociacoes =>
+            negociacoes.forEach(negociacao =>
+                this._listaNegociacoes.adiciona(negociacao)))
+        .catch(erro => {
+            this._mensagem.texto = erro;
+        });
 
     setInterval(() => {
       this.importaNegociacoes();
@@ -26,7 +31,7 @@ class NegociacaoController {
     event.preventDefault();
     let negociacao = this._criaNegociacao();
 
-    new NegociacaoService()
+    this._service
       .cadastra(negociacao)
       .then(mensagem => {
         this._listaNegociacoes.adiciona(negociacao);
@@ -39,7 +44,7 @@ class NegociacaoController {
   }
 
   importaNegociacoes() {
-    let service = new NegociacaoService();
+    let service = this._service;
 
     service.obterNegociacoes()
       .then(negociacoes => negociacoes.filter(negociacao =>
@@ -51,12 +56,13 @@ class NegociacaoController {
   }
 
   apaga() {
-    ConnectionFactory.getConnection().then(connection => {
-      new NegociacaoDao(connection).apagaTodos().then((msg) => {
+    this._service
+    .apaga()
+    .then(mensagem => {
+        this._mensagem.texto = mensagem;
         this._listaNegociacoes.esvazia();
-        this._mensagem.texto = msg;
-      }).catch(error => this._mensagem.texto = error);
-    }).catch(error => this._mensagem.texto = error);
+    })
+    .catch(erro => this._mensagem.texto = erro);
   }
 
   _criaNegociacao(tipo) {
