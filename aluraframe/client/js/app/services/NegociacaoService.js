@@ -44,4 +44,15 @@ class NegociacaoService {
             throw new Error(erro);
         });
     }
+
+    cadastra(negociacao) {
+        return ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.adiciona(negociacao))
+            .then(() => 'Negociação adicionada com sucesso')
+            .catch(error => {
+                throw new Error(error)
+            });
+    }
 }
