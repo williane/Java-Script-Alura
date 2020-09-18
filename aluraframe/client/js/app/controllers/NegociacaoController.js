@@ -13,13 +13,13 @@ class NegociacaoController {
 
   _init() {
     this._service
-        .lista()
-        .then(negociacoes =>
-            negociacoes.forEach(negociacao =>
-                this._listaNegociacoes.adiciona(negociacao)))
-        .catch(erro => {
-            this._mensagem.texto = erro;
-        });
+      .lista()
+      .then(negociacoes =>
+        negociacoes.forEach(negociacao =>
+          this._listaNegociacoes.adiciona(negociacao)))
+      .catch(erro => {
+        this._mensagem.texto = erro;
+      });
 
     setInterval(() => {
       this.importaNegociacoes();
@@ -44,25 +44,24 @@ class NegociacaoController {
   }
 
   importaNegociacoes() {
-    let service = this._service;
 
-    service.obterNegociacoes()
-      .then(negociacoes => negociacoes.filter(negociacao =>
-        !this._listaNegociacoes.negociacoes.some(negociacaoExistente => JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente))))
-      .then(negociacoes => {
-        negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
-        // this._mensagem.texto = 'Negociações obtidas com sucesso!';
-      }).catch(erro => this._mensagem.texto = erro);
+    this._service
+      .importa(this._listaNegociacoes.negociacoes)
+      .then(negociacoes => negociacoes.forEach(negociacao => {
+        this._listaNegociacoes.adiciona(negociacao);
+        // this._mensagem.texto = 'Negociações do período importadas'
+      }))
+      .catch(erro => this._mensagem.texto = erro);
   }
 
   apaga() {
     this._service
-    .apaga()
-    .then(mensagem => {
+      .apaga()
+      .then(mensagem => {
         this._mensagem.texto = mensagem;
         this._listaNegociacoes.esvazia();
-    })
-    .catch(erro => this._mensagem.texto = erro);
+      })
+      .catch(erro => this._mensagem.texto = erro);
   }
 
   _criaNegociacao(tipo) {
