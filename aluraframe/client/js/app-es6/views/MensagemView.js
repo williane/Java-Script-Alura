@@ -1,4 +1,5 @@
-class mensagemView extends View{
+import { View } from './View.js';
+export class mensagemView extends View{
     constructor(elemento){
         super(elemento);
     }

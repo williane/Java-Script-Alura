@@ -1,4 +1,4 @@
-class DateHelper {
+export class DateHelper {
   constructor() {
     throw new Error("A classe DateHelper não deve ser instanciada");
   }
